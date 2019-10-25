@@ -1,0 +1,8 @@
+ <a href="{% url 'users:home' %}"> home</a>
+
+<h4>add problem<h4>
+<form action="{% url 'problems:addproblem'  %}"  method='post'>
+{% csrf_token %}
+{{form.as_p}}
+<input type='submit' value="submit"/>
+</form>

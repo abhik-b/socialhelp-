@@ -1,0 +1,48 @@
+<a href="{% url 'users:home' %}">home</a>
+
+<h1>{{user.username}}<h1>
+
+
+<h4>useful solution contribution :{{user.verified_solutions_count}}</h4>
+<h3>achievements {{user.achievementscompleted.count}}<h3>
+
+{% for ac in user.achievementscompleted.all %}
+<p>{{ac.title}}<p>
+{% endfor %}
+
+{% if not user == request.user %}
+    {% if user in request.user.friends.all %}
+        <p>you are friends with {{user}}<p>
+    {% else %}
+        {% if recieved_from_requestuser_bool %}
+            <h2>sent request<h2>
+        {% else %}
+            {% if sent_to_requestuser_bool %}
+            <h2>recieved request<h2>
+            {% else %}
+            <a href="{% url 'users:sendrequest' user.id %}">add friend</a>
+            {% endif %}
+            
+        {% endif %}
+    {% endif %}
+{% else %}
+    <form action="{% url 'users:search'%}" >
+    <label>enter username to search users:</label>
+    <input type="text" name="q" placeholder="enter username " />
+    </form>
+    <h2>Sent requests:<h2>
+    {% for s in sent %}
+    to -{{s.to_user}} <a href="{% url 'users:cancelrequest' s.to_user.id %}">cancel</a>
+    {% endfor %}
+    <h2>Recieved requests:<h2>
+    {% for r in recieved %}
+    from-{{r.from_user}}
+    <a href="{% url 'users:acceptrequest' r.from_user.id %}">accept</a>
+    <a href="{% url 'users:deleterequest' r.from_user.id %}">delete</a>
+    {% endfor %}
+    <h4>your  FRienDS<h4>
+    {% for f in user.friends.all  %}
+    <a href="{% url 'users:profile' f.id %}"> {{f.username}}</a>
+    <a href="{% url 'users:removefriend' f.id %}">remove</a>
+    {% endfor %}
+{% endif %}

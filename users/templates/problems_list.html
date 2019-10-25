@@ -1,0 +1,20 @@
+<a href="{% url 'users:home' %}">home</a>
+{% for prob in problems  %}
+<h2><a href="{% url 'problems:problemdetail' prob.id %}">{{prob.content}}</a> <h2>
+{% if prob.posted_by == request.user %}
+<h4>posted by you<h4>
+{% else %}
+<h4>posted by <a href="{% url 'users:profile' prob.posted_by.id %}">{{prob.posted_by}}</a><h4>
+{% endif %}
+{% comment %} <h4>posted by {{prob.posted_by}}<h4> {% endcomment %}
+{% if not prob.subject == None %}
+<span>Subject:{{prob.subject}} ||<span>
+{% else %}
+<span>no subject mentioned ||<span>
+{% endif %}
+{% if not prob.topic == None %}
+<span>Topic:{{prob.topic}}<span>
+{% else %}
+<span>no topic mentioned<span>
+{% endif %}
+{% endfor %}

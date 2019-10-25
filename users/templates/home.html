@@ -1,0 +1,34 @@
+<a href="{% url 'users:home' %}">home</a>
+<br>
+<a href ="{% url 'problems:problem-list'  %}">Problems</a>
+{% if user.is_authenticated %}
+<h3> hi <a href="{% url 'users:profile' user.id %}"> {{user.username}}</a> !!!<h3>
+<a href="{% url 'account_logout'  %}">logout</a>
+<br>
+{% comment %} {% for u in users %}
+{{u.username}}
+<a href="{% url 'users:sendrequest' u.id  %}">send</a>
+{% endfor %} {% endcomment %}
+<a href="{% url 'problems:addproblem'  %}">+ add problem</a>
+<br>
+
+
+<h2>Friends problems(if any)<h2>
+
+{% if not friends_problems %}
+<a href='/problems/friendsproblems/'>see if they posted any problem</a>
+<small>(if clicking on this link returns no problems probably your friends didnot post any problems yet)<small>
+{% else %}
+{% for fp in friends_problems  %}
+<a href="{% url 'problems:problemdetail' fp.id %}">{{fp.content}}</a> || by {{fp.posted_by}}  
+<br>
+{% endfor %}
+{% endif %}
+
+
+{% else %}
+<br>
+<a href="{% url 'account_login'  %}">login</a>
+<a href="{% url 'account_signup'  %}">signup</a>
+{% endif %}
+

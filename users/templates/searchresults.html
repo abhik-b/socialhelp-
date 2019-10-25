@@ -1,0 +1,10 @@
+
+<a href="{% url 'users:home' %}">home</a>
+{% if users %}
+{% for userr in users %}
+<h4><a href="{% url 'users:profile' userr.id %}">{{userr.username}}</a><h4>
+{% endfor %}
+
+{% else %}
+<p>not found<p>
+{% endif %}

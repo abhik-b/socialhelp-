@@ -1,0 +1,47 @@
+<h1>{{problem.content}}<h1>
+{% if not problem.subject == None %}
+<span>Subject:{{problem.subject}} ||<span>
+{% else %}
+<span>no subject mentioned ||<span>
+{% endif %}
+{% if not problem.topic == None %}
+<span>Topic:{{problem.topic}}<span>
+{% else %}
+<span>no topic mentioned<span>
+{% endif %}
+
+<h3>posted  by :{{problem.posted_by}}<h3>
+<h5>soln   count :{{problem.solution_set.count}}<h5>
+
+add soln.
+<form action='' method='post'>
+{% csrf_token %}
+{{soln.as_p}}
+<input type='submit'/>
+<form>
+
+<br>
+soln.s 
+{% for solns in problem.solution_set.all %}
+<p>{{solns.content}}|| {{solns.provided_by}}<p>
+
+{% if solns.verified %}
+verified
+{% else %}
+{% if request.user == problem.posted_by %}
+{% if not request.user == solns.provided_by  %}
+<a href="{% url 'problems:verifysolution' solns.id %}">verify solns</a>
+{% else %}
+{% endif %}
+
+{% else %}
+{% if solns.provided_by == problem.posted_by %}
+
+{% else %}
+<p>not verified<p>
+{% endif %}
+
+{% endif %}
+{% endif %}
+
+{% endfor %}
